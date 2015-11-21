@@ -10,11 +10,28 @@ public class UserConfigurationManager {
 
     public List<NoisyPicture> getUserNoisyPicture() {
         List<NoisyPicture> noisyPictureList = new ArrayList<>();
-        noisyPictureList.add(getSamplePicture());
+        noisyPictureList.add(getSamplePictureMario());
+        noisyPictureList.add(getSamplePictureZelda());
+        noisyPictureList.add(getSamplePictureSouthPark());
         return noisyPictureList;
     }
 
-    private NoisyPicture getSamplePicture() {
+    private NoisyPicture getSamplePictureMario() {
+        // TODO Mario
+        String visualPath = "???";
+        List<NoisyPictureSound> sounds = new ArrayList<>();
+        return new NoisyPicture(visualPath, false, sounds);
+    }
+
+    private NoisyPicture getSamplePictureZelda() {
+        // TODO Zelda
+        String visualPath = "???";
+        List<NoisyPictureSound> sounds = new ArrayList<>();
+        return new NoisyPicture(visualPath, false, sounds);
+    }
+
+    private NoisyPicture getSamplePictureSouthPark() {
+        // TODO SouthParc
         String visualPath = "???";
         List<NoisyPictureSound> sounds = new ArrayList<>();
         return new NoisyPicture(visualPath, false, sounds);
