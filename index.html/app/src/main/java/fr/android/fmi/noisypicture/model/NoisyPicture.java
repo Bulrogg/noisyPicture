@@ -27,4 +27,13 @@ public class NoisyPicture {
     public List<NoisyPictureSound> getSounds() {
         return sounds;
     }
+
+    @Override
+    public String toString() {
+        return "NoisyPicture{" +
+                "visualPath='" + visualPath + '\'' +
+                ", isEditable=" + isEditable +
+                ", sounds=" + sounds +
+                '}';
+    }
 }

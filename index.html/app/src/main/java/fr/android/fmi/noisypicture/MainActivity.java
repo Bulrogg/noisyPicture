@@ -8,6 +8,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.List;
 
 import fr.android.fmi.noisypicture.model.NoisyPicture;
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int BTN_PICTURE_WIDTH = 450;
 
     public static final int BTN_PICTURE_HEIGHT = 450;
+
+    // FIXME meilleur lien entre vue et data métier ?
+    private HashMap<View, NoisyPicture> viewNoisyPictureMap = new HashMap<>();
 
     // FIXME IOC ?
     UserConfigurationManager userConfigurationManager = new UserConfigurationManager();
@@ -43,15 +47,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void addNoisyPictureButtons(GridLayout picturesContainerView) {
         List<NoisyPicture> noisyPictureList = userConfigurationManager.getUserNoisyPicture();
-        for (int i = 1; i <= noisyPictureList.size(); i++) {
-            Button picture = new Button(this);
-            picture.setWidth(BTN_PICTURE_WIDTH);
-            picture.setHeight(BTN_PICTURE_HEIGHT);
-            picture.setText(Integer.toString(i));
-            picture.setOnClickListener(new PictureOnClickListener());
-            picture.setOnLongClickListener(new PictureOnLongClickListener());
+        for(NoisyPicture noisyPicture : noisyPictureList) {
+            Button picture = createNoisyPictureButton(noisyPicture);
+            viewNoisyPictureMap.put(picture, noisyPicture);
             picturesContainerView.addView(picture);
         }
+    }
+
+    private Button createNoisyPictureButton(NoisyPicture noisyPicture) {
+        Button picture = new Button(this);
+        picture.setWidth(BTN_PICTURE_WIDTH);
+        picture.setHeight(BTN_PICTURE_HEIGHT);
+        picture.setText(noisyPicture.getVisualPath());
+        picture.setOnClickListener(new PictureOnClickListener());
+        picture.setOnLongClickListener(new PictureOnLongClickListener());
+        return picture;
     }
 
     private void notifier(String text) {
@@ -69,16 +79,16 @@ public class MainActivity extends AppCompatActivity {
     class PictureOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Button button = (Button) v;
-            notifier("Click court => Go to picture " + button.getText());
+            NoisyPicture noisyPicture = viewNoisyPictureMap.get(v);
+            notifier("Click court => Go to picture " + noisyPicture);
         }
     }
 
     class PictureOnLongClickListener implements View.OnLongClickListener {
         @Override
         public boolean onLongClick(View v) {
-            Button button = (Button) v;
-            notifier("Click long => Popup contextuelle " + button.getText());
+            NoisyPicture noisyPicture = viewNoisyPictureMap.get(v);
+            notifier("Click long => Popup contextuelle " + noisyPicture);
             return true;
         }
     }
