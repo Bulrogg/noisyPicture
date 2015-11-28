@@ -1,12 +1,11 @@
 package fr.android.fmi.noisypicture;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 import fr.android.fmi.noisypicture.model.NoisyPicture;
 import fr.android.fmi.noisypicture.service.UserConfigurationManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     public static final int BTN_PICTURE_WIDTH = 450;
 
@@ -48,25 +47,27 @@ public class MainActivity extends AppCompatActivity {
     private void addNoisyPictureButtons(GridLayout picturesContainerView) {
         List<NoisyPicture> noisyPictureList = userConfigurationManager.getUserNoisyPicture();
         for(NoisyPicture noisyPicture : noisyPictureList) {
-            Button picture = createNoisyPictureButton(noisyPicture);
+            View picture = createNoisyPictureButton(noisyPicture);
             viewNoisyPictureMap.put(picture, noisyPicture);
             picturesContainerView.addView(picture);
         }
     }
 
-    private Button createNoisyPictureButton(NoisyPicture noisyPicture) {
+    private View createNoisyPictureButton(NoisyPicture noisyPicture) {
         Button picture = new Button(this);
         picture.setWidth(BTN_PICTURE_WIDTH);
         picture.setHeight(BTN_PICTURE_HEIGHT);
-        picture.setText(noisyPicture.getVisualPath());
+        picture.setText(noisyPicture.getId());
+        // TODO setBackground
         picture.setOnClickListener(new PictureOnClickListener());
         picture.setOnLongClickListener(new PictureOnLongClickListener());
         return picture;
     }
 
-    private void notifier(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-
+    private void openNoisyPictureActivity(NoisyPicture noisyPicture) {
+        Intent intent = new Intent(this, NoisyPictureActivity.class);
+        intent.putExtra(EXTRA_NOISY_PICTURE, noisyPicture);
+        startActivity(intent);
     }
 
     class NewPictureOnClickListener implements View.OnClickListener {
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             NoisyPicture noisyPicture = viewNoisyPictureMap.get(v);
-            notifier("Click court => Go to picture " + noisyPicture);
+            openNoisyPictureActivity(noisyPicture);
         }
     }
 

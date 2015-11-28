@@ -3,6 +3,7 @@ package fr.android.fmi.noisypicture.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.android.fmi.noisypicture.R;
 import fr.android.fmi.noisypicture.model.NoisyPicture;
 import fr.android.fmi.noisypicture.model.NoisyPictureSound;
 
@@ -17,23 +18,20 @@ public class UserConfigurationManager {
     }
 
     private NoisyPicture getSamplePictureMario() {
-        // TODO Mario
-        String visualPath = "???";
+        String visualPath = Integer.toString(R.drawable.mario);
         List<NoisyPictureSound> sounds = new ArrayList<>();
-        return new NoisyPicture(visualPath, false, sounds);
+        return new NoisyPicture("Mario", visualPath, false, sounds);
     }
 
     private NoisyPicture getSamplePictureZelda() {
-        // TODO Zelda
-        String visualPath = "???";
+        String visualPath = Integer.toString(R.drawable.zelda);
         List<NoisyPictureSound> sounds = new ArrayList<>();
-        return new NoisyPicture(visualPath, false, sounds);
+        return new NoisyPicture("Zelda", visualPath, false, sounds);
     }
 
     private NoisyPicture getSamplePictureSouthPark() {
-        // TODO SouthParc
-        String visualPath = "???";
+        String visualPath = Integer.toString(R.drawable.south_park);
         List<NoisyPictureSound> sounds = new ArrayList<>();
-        return new NoisyPicture(visualPath, false, sounds);
+        return new NoisyPicture("South park", visualPath, false, sounds);
     }
 }
