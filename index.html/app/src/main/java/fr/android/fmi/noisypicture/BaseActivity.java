@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 public class BaseActivity extends AppCompatActivity {
 
-    protected static final String EXTRA_NOISY_PICTURE = "EXTRA_NOISY_PICTURE";
+    public static final String EXTRA_NOISY_PICTURE = "EXTRA_NOISY_PICTURE";
 
     protected void notifier(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();

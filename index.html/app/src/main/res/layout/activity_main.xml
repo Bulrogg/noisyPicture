@@ -12,28 +12,24 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Pictures"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="My Pictures"
         android:textAlignment="center"
-        android:id="@+id/textView" />
+        android:textSize="40dp" />
 
-    <GridLayout
-        android:id="@+id/pictures_container"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/noisyPictureContainerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="10dp"
-        android:columnCount="2">
-
-    </GridLayout>
-
+        android:scrollbars="vertical"
+        android:layout_below="@+id/textView" />
 
 
 </RelativeLayout>

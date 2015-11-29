@@ -1,28 +1,19 @@
 package fr.android.fmi.noisypicture;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import java.util.HashMap;
-import java.util.List;
-
-import fr.android.fmi.noisypicture.model.NoisyPicture;
 import fr.android.fmi.noisypicture.service.UserConfigurationManager;
 
 public class MainActivity extends BaseActivity {
 
-    public static final int BTN_PICTURE_WIDTH = 450;
+    private RecyclerView mRecyclerView;
 
-    public static final int BTN_PICTURE_HEIGHT = 450;
+    private RecyclerView.Adapter mAdapter;
 
-    // FIXME meilleur lien entre vue et data métier ?
-    private HashMap<View, NoisyPicture> viewNoisyPictureMap = new HashMap<>();
+    private RecyclerView.LayoutManager mLayoutManager;
 
-    // FIXME IOC ?
     UserConfigurationManager userConfigurationManager = new UserConfigurationManager();
 
     @Override
@@ -30,68 +21,14 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GridLayout picturesContainerView = (GridLayout) findViewById(R.id.pictures_container);
-        addNoisyPictureButtons(picturesContainerView);
-        addNewNoisyPictureButton(picturesContainerView);
-    }
+        mRecyclerView = (RecyclerView) findViewById(R.id.noisyPictureContainerRecyclerView);
+        mRecyclerView.setHasFixedSize(true);
 
-    private void addNewNoisyPictureButton(GridLayout picturesContainerView) {
-        ImageButton picture = new ImageButton(this);
-        picture.setMaxWidth(BTN_PICTURE_WIDTH);
-        picture.setMaxHeight(BTN_PICTURE_HEIGHT);
-        picture.setBackgroundResource(R.drawable.plus);
-        picture.setOnClickListener(new NewPictureOnClickListener());
-        picturesContainerView.addView(picture);
-    }
+        mLayoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-    private void addNoisyPictureButtons(GridLayout picturesContainerView) {
-        List<NoisyPicture> noisyPictureList = userConfigurationManager.getUserNoisyPicture();
-        for(NoisyPicture noisyPicture : noisyPictureList) {
-            View picture = createNoisyPictureButton(noisyPicture);
-            viewNoisyPictureMap.put(picture, noisyPicture);
-            picturesContainerView.addView(picture);
-        }
-    }
-
-    private View createNoisyPictureButton(NoisyPicture noisyPicture) {
-        Button picture = new Button(this);
-        picture.setWidth(BTN_PICTURE_WIDTH);
-        picture.setHeight(BTN_PICTURE_HEIGHT);
-        picture.setText(noisyPicture.getId());
-        // TODO setBackground
-        picture.setOnClickListener(new PictureOnClickListener());
-        picture.setOnLongClickListener(new PictureOnLongClickListener());
-        return picture;
-    }
-
-    private void openNoisyPictureActivity(NoisyPicture noisyPicture) {
-        Intent intent = new Intent(this, NoisyPictureActivity.class);
-        intent.putExtra(EXTRA_NOISY_PICTURE, noisyPicture);
-        startActivity(intent);
-    }
-
-    class NewPictureOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            notifier("Click court => Go to new picture");
-        }
-    }
-
-    class PictureOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            NoisyPicture noisyPicture = viewNoisyPictureMap.get(v);
-            openNoisyPictureActivity(noisyPicture);
-        }
-    }
-
-    class PictureOnLongClickListener implements View.OnLongClickListener {
-        @Override
-        public boolean onLongClick(View v) {
-            NoisyPicture noisyPicture = viewNoisyPictureMap.get(v);
-            notifier("Click long => Popup contextuelle " + noisyPicture);
-            return true;
-        }
+        mAdapter = new NoisyPictureRecyclerViewAdapter(userConfigurationManager.getUserNoisyPicture());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
 }
