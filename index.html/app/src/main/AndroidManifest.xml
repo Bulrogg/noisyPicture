@@ -25,12 +25,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".NoisyPictureActivity"
             android:label="@string/title_activity_noisy_picture"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
